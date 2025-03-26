@@ -1,4 +1,6 @@
 # 2 Project NPV Calculation, with Graph
+
+import matplotlib.pyplot as plt
 # Project A Cash Flows Here:
 project_a = [-1000000, 0, 0, 50000, 50000, 200000, 250000, 250000, 250000, 250000, 375000, 375000, 375000, 375000, 375000, 250000, 250000, 250000, 250000, 100000]
 

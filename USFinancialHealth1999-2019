@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+import pandas_datareader.data as web
+import pandas_datareader.wb as wb
+import datetime
+
+gold_prices = pd.read_csv('gold_prices.csv')
+print("\nGold Prices:\n", gold_prices.head())
+
+crude_oil_prices = pd.read_csv('crude_oil_prices.csv')
+print("\nCrude Oil Prices:\n", crude_oil_prices.head())
+
+start = datetime.datetime(1999, 1, 1)
+end = datetime.datetime(2019, 1, 1)
+
+nasdaq_data = web.DataReader('NASDAQ100', 'fred', start, end)
+print("\nNASDAQ 100 Data:\n", nasdaq_data.head())
+
+sap_data = web.DataReader('SP500', 'fred', start, end)
+print("\nS&P 500 Data:\n", sap_data.head())
+
+gdp_data = wb.download(indicator='NY.GDP.MKTP.CD', country=['US'], start=start.year, end=end.year)
+print("\nGDP Data:\n", gdp_data.head())
+
+
+export_data = wb.download(indicator='NE.EXP.GNFS.CN', country=['US'], start=start.year, end=end.year)
+print("\nExport Data:\n", export_data.head())
+# 11 & 12. Define log return function
+def log_return(prices):
+    return np.log(prices / prices.shift(1))
+
+gold_returns = log_return(gold_prices['Gold_Price'])
+
+crudeoil_returns = log_return(crude_oil_prices['Crude_Oil_Price'])
+nasdaq_returns = log_return(nasdaq_data['NASDAQ100'])
+sap_returns = log_return(sap_data['SP500'])
+gdp_returns = log_return(gdp_data['NY.GDP.MKTP.CD'])
+export_returns = log_return(export_data['NE.EXP.GNFS.CN'])
+print("\n🔍 Volatility (Variance) of Log Returns:")
+print("Gold:", gold_returns.var())
+print("Crude Oil:", crudeoil_returns.var())
+print("NASDAQ:", nasdaq_returns.var())
+print("S&P 500:", sap_returns.var())
+print("GDP:", gdp_returns.var())
+print("Exports:", export_returns.var())
